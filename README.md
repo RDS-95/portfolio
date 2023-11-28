@@ -2,7 +2,7 @@
 
 In this repo, I have included some personal projects (large and small).
 
-# DiceGameStrategy.pdf
+# DiceGameStrategy.ipynb
 
 This notebook investigates the optimal strategy for a particular dice game. An answer is derived both analytically and computationally.
 
