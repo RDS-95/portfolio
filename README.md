@@ -17,7 +17,7 @@ extend into a conditional framework for generating time series under specific co
 
 # NLP - Bumble reviews.ipynb
 
-A quick sentiment analysis piece based on dating app reviews. Data set obtained from Kaggle
+A quick sentiment analysis piece based on dating app reviews. The data set comes from Kaggle
 
 # Shakespeare_RNN.ipynb
 
