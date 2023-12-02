@@ -2,10 +2,6 @@
 
 In this repo, I have included some personal projects (large and small).
 
-# DiceGameStrategy.ipynb
-
-This notebook investigates the optimal strategy for a particular dice game. An answer is derived both analytically and computationally.
-
 # GANs-MScThesis.pdf
 
 A copy of my research thesis (received 92%). Submitted as part of a Master of Science degree in Financial and Computational Mathematics at University College Cork. 
