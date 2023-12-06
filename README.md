@@ -2,6 +2,10 @@
 
 In this repo, I have included some personal projects (large and small).
 
+# DiceGameStrategy
+
+This is a notebook inspired by an interview question I once received. It contains a thorough analysis of a theoretical dice game.
+
 # GANs-MScThesis.pdf
 
 A copy of my research thesis (received 92%). Submitted as part of a Master of Science degree in Financial and Computational Mathematics at University College Cork. 
@@ -17,7 +21,7 @@ extend into a conditional framework for generating time series under specific co
 
 # NLP - Bumble reviews.ipynb
 
-A quick sentiment analysis piece based on dating app reviews. The data set comes from Kaggle
+A quick sentiment analysis piece based on dating app reviews. The data set comes from Kaggle.
 
 # Shakespeare_RNN.ipynb
 
