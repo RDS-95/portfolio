@@ -6,6 +6,10 @@ In this repo, I have included some personal projects (large and small).
 
 This is a notebook inspired by an interview question I once received. It contains a thorough analysis of a theoretical dice game.
 
+# GANs-MScThesis-SampleNotebook.pdf
+
+This is a sample jupyter notebook showing some of the work done on my MSc. Thesis project. It relates, in particular, to section 5.1 of the entire document. The complete project can also be found in this directory for more context and detail.
+
 # GANs-MScThesis.pdf
 
 A copy of my research thesis (received 92%). Submitted as part of a Master of Science degree in Financial and Computational Mathematics at University College Cork. 
