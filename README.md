@@ -8,7 +8,7 @@ This is a notebook inspired by an interview question I once received. It contain
 
 # GANs-MScThesis-SampleNotebook.pdf
 
-This is a sample jupyter notebook showing some of the work done on my MSc. Thesis project. It relates, in particular, to section 5.1 of the entire document. The complete project can also be found in this directory for more context and detail.
+This is a sample jupyter notebook showing some of the work done on my MSc. Thesis project. It relates, in particular, to section 5.1 in the PDF file. The complete project can also be found in this directory for more context and detail.
 
 # GANs-MScThesis.pdf
 
