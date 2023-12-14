@@ -27,7 +27,3 @@ extend into a conditional framework for generating time series under specific co
 
 A quick sentiment analysis piece based on dating app reviews. The data set comes from Kaggle.
 
-# Shakespeare_RNN.ipynb
-
-A demonstration of a stateless RNN trained on Shakespearean text and then used to generate dialogue probabilistically.
-
