@@ -11,27 +11,26 @@ class optionPosition:
         """ 
         if strike_price > self.graph_max - 50:
             self.graph_max = strike_price + 50
-        
-    def call_payout(final_prices, strike_price, premium, quantity=1):
+    
+    def call_payout(self, strike_price, premium, quantity):
         """
         Calculate the payout of a standard vanilla call option.
-        final_prices: The range over which the payout should be calculated.
         strike_price: The strike/exercise price of the option
         premium: The premium paid for the contract
         quantity: The number of contracts purchased. Can take negative values if writing contracts.
         """ 
-        return quantity * (np.where(final_prices > strike_price, final_prices - strike_price, 0) - premium)
+        return quantity * (np.where(self.final_prices > strike_price, self.final_prices - strike_price, 0) - premium)
     
-    def put_payout(final_prices, strike_price, premium, quantity=1):
+    def put_payout(self, strike_price, premium, quantity=1):
         """
         Calculate the payout of a standard vanilla put option.
-        final_prices: The range over which the payout should be calculated.
         strike_price: The strike/exercise price of the option
         premium: The premium paid for the contract
         quantity: The number of contracts purchased. Can take negative values if writing contracts.
         """ 
-        return quantity * (np.where(final_prices < strike_price, strike_price - final_prices, 0) - premium)
-
+        return quantity * (np.where(self.final_prices < strike_price, strike_price - self.final_prices, 0) - premium)
+    
+            
     def add_call_option(self, strike_price, premium, quantity=1):
         """
         Adds a call option to the current position and updates the payoffs accordingly
@@ -47,7 +46,8 @@ class optionPosition:
             'quantity': quantity
         }
         self.options.append(option)
-        self.payouts = np.add(self.payouts, call_payout(self.final_prices, strike_price, premium, quantity=quantity))
+        self.payouts = np.add(self.payouts, self.call_payout(strike_price, premium, quantity))
+
 
     def add_put_option(self, strike_price, premium, quantity=1):
         """
@@ -64,7 +64,7 @@ class optionPosition:
             'quantity': quantity
         }
         self.options.append(option)
-        self.payouts = np.add(self.payouts, put_payout(self.final_prices, strike_price, premium, quantity))
+        self.payouts = np.add(self.payouts, self.put_payout(strike_price, premium, quantity))
 
 
     def show_position(self):
