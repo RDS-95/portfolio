@@ -27,6 +27,6 @@ extend into a conditional framework for generating time series under specific co
 
 A quick sentiment analysis piece based on dating app reviews. The data set comes from Kaggle.
 
-#### optionParityGraphing
+#### Option Parity
 
 This folder contains a class I created to visualise payoffs for complex options positions. A jupyter notebook is included to demonstrate the intended functionality.
