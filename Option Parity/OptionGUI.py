@@ -1,7 +1,22 @@
 import tkinter as tk
 import optionPosition
 
-current_position = optionPosition()
+current_position = optionPosition.optionPosition()
+
+def clear_button():
+    current_position = optionPosition.optionPosition()
+    current_position.parity_graph()
+
+def add_button():
+    current_position.add_option(
+        option_type = v_option_type.get(),
+        strike_price = int(entry_strike.get()),
+        premium = int(entry_premium.get()),
+        position_type = v_position_type.get()
+    )
+    entry_strike.select_clear()
+    entry_premium.select_clear()
+    current_position.parity_graph()
 
 window = tk.Tk()
 
@@ -69,7 +84,7 @@ button_addition = tk.Button(
     font=("Helvetica", 20 * -1),
     borderwidth=0,
     highlightthickness=0,
-    command=current_position.add_option(),
+    command=add_button,
     relief="flat"
 )
 button_addition.place(
@@ -84,7 +99,7 @@ button_clear = tk.Button(
     text="CE",
     borderwidth=0,
     highlightthickness=0,
-    command=lambda: print("Clear Button clicked"),
+    command=clear_button,
     relief="flat"
 )
 button_clear.place(
@@ -101,7 +116,7 @@ button_call = tk.Radiobutton(
     text="Call",
     font=("Helvetica", 20 * -1),
     variable=v_option_type,
-    value="call"
+    value="Call"
 )
 button_call.place(
     x=47.0,
@@ -115,7 +130,7 @@ button_put = tk.Radiobutton(
     text="Put",
     font=("Helvetica", 20 * -1),
     variable=v_option_type,
-    value="put"
+    value="Put"
 )
 button_put.place(
     x=47.0,
@@ -131,7 +146,7 @@ button_long = tk.Radiobutton(
     text="Long",
     font=("Helvetica", 20 * -1),
     variable=v_position_type,
-    value="long"
+    value="Long"
 )
 button_long.place(
     x=645.0,
@@ -145,7 +160,7 @@ button_short = tk.Radiobutton(
     text="Short",
     font=("Helvetica", 20 * -1),
     variable=v_position_type,
-    value="short"
+    value="Short"
 )
 button_short.place(
     x=645.0,

@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-class OptionPosition:
+class optionPosition:
     def __init__(self):
         self.options = []
         self.graph_max = 10
@@ -16,48 +16,54 @@ class OptionPosition:
         if strike_price > self.graph_max - 50:
             self.graph_max = strike_price + 50
     
-    def call_payout(self, strike_price, premium, quantity):
+    def call_payout(self, strike_price, premium):
         """
         Calculate the payout of a standard vanilla call option.
         strike_price: The strike/exercise price of the option
         premium: The premium paid for the contract
-        quantity: The number of contracts purchased. Can take negative values if writing contracts.
-        """ 
-        return quantity * (np.where(self.final_prices > strike_price, self.final_prices - strike_price, 0) - premium)
+        """
+        return np.where(self.final_prices > strike_price, self.final_prices - strike_price, 0) - premium
     
-    def put_payout(self, strike_price, premium, quantity=1):
+    def put_payout(self, strike_price, premium):
         """
         Calculate the payout of a standard vanilla put option.
         strike_price: The strike/exercise price of the option
         premium: The premium paid for the contract
-        quantity: The number of contracts purchased. Can take negative values if writing contracts.
-        """ 
-        return quantity * (np.where(self.final_prices < strike_price, strike_price - self.final_prices, 0) - premium)
+        """
+        return np.where(self.final_prices < strike_price, strike_price - self.final_prices, 0) - premium
 
-    def add_option(self, strike_price, premium, option_type, quantity=1):
+    def add_option(self, strike_price, premium, option_type, position_type):
         """
         Adds a call/put option to the current position and updates the payoffs accordingly
         strike_price: The strike/exercise price of the option
         premium: The premium paid for the contract
-        quantity: The number of contracts purchased. Can take negative values if writing contracts.
         """
         self.update_graph_max(strike_price)
-
-        if option_type not in ("Call", "Put"):
-            raise ValueError('Invalid Option Type')
-
-        option = {
-            'type': option_type,
-            'strike_price': strike_price,
-            'premium': premium,
-            'quantity': quantity
-        }
-        self.options.append(option)
+        self._validate_option_parameters(option_type, position_type)
+        self._append_option(option_type, strike_price, premium)
 
         if option_type == "Call":
-            self.payouts = np.add(self.payouts, self.call_payout(strike_price, premium, quantity))
+            if position_type == "Long":
+                self.payouts = np.add(self.payouts, self.call_payout(strike_price, premium))
+            elif position_type == "Short":
+                self.payouts = np.add(self.payouts, -self.call_payout(strike_price, premium))
         else:  # option_type == "Put"
-            self.payouts = np.add(self.payouts, self.put_payout(strike_price, premium, quantity))
+            if position_type == "Long":
+                self.payouts = np.add(self.payouts, self.put_payout(strike_price, premium))
+            elif position_type == "Short":
+                self.payouts = np.add(self.payouts, -self.put_payout(strike_price, premium))
+
+        self.parity_graph()
+
+    def _validate_option_parameters(self, option_type, position_type):
+        if option_type not in ("Call", "Put"):
+            raise ValueError(f'Invalid Option Type: "{option_type}". Accepted Values: "Call", "Put"')
+        if position_type not in ("Long", "Short"):
+            raise ValueError(f'Invalid Position Type: "{position_type}". Accepted Values: "Long", "Short"')
+
+    def _append_option(self, option_type, strike_price, premium):
+        option = {'type': option_type, 'strike_price': strike_price, 'premium': premium}
+        self.options.append(option)
 
     def show_position(self):
         """
@@ -72,13 +78,13 @@ class OptionPosition:
             option_type = option['type']
             strike_price = option['strike_price']
             premium = option['premium']
-            quantity = option['quantity']
             print(f"Option {index}: {option_type} - Strike Price: {strike_price}, "
-                  f"Premium: {premium}, Quantity: {quantity}")
+                  f"Premium: {premium}")
 
     def find_breakeven_points(self):
         """
         find_breakeven_points gets the final asset prices where the holder of the position is breaking even.
+        This is used in the parity_graph method.
         """ 
         
         # Use change of signs in payouts to find where the crossings are.
@@ -101,7 +107,7 @@ class OptionPosition:
         parity_graph creates a diagram summarizing payout at expiry based on the current position.
         It takes into account all options currently held/written.
         """ 
-        plt.figure(figsize=(10, 6))
+        plt.figure(figsize=(10, 4))
         plt.plot(self.final_prices, self.payouts, label='Position Payoff')
         plt.xlabel('Final Asset Prices')
         plt.ylabel('Payoff')
