@@ -1,4 +1,7 @@
 import tkinter as tk
+import optionPosition
+
+current_position = optionPosition()
 
 window = tk.Tk()
 
@@ -66,7 +69,7 @@ button_addition = tk.Button(
     font=("Helvetica", 20 * -1),
     borderwidth=0,
     highlightthickness=0,
-    command=lambda: print("Add button clicked"),
+    command=current_position.add_option(),
     relief="flat"
 )
 button_addition.place(
@@ -91,56 +94,60 @@ button_clear.place(
     height=67.0
 )
 
-button_2 = tk.Button(
-    text="2",
-    borderwidth=0,
-    highlightthickness=0,
-    command=lambda: print("button_2 clicked"),
-    relief="flat"
+# Radio Buttons for Option Type
+v_option_type = tk.StringVar(window, "1")
+button_call = tk.Radiobutton(
+    master=window,
+    text="Call",
+    font=("Helvetica", 20 * -1),
+    variable=v_option_type,
+    value="call"
 )
-button_2.place(
+button_call.place(
     x=47.0,
     y=553.0,
     width=160.0,
     height=44.0
 )
 
-button_3 = tk.Button(
-    text="3",
-    borderwidth=0,
-    highlightthickness=0,
-    command=lambda: print("button_3 clicked"),
-    relief="flat"
+button_put = tk.Radiobutton(
+    master=window,
+    text="Put",
+    font=("Helvetica", 20 * -1),
+    variable=v_option_type,
+    value="put"
 )
-button_3.place(
+button_put.place(
     x=47.0,
     y=611.0,
     width=160.0,
     height=44.0
 )
 
-button_4 = tk.Button(
-    text="4",
-    borderwidth=0,
-    highlightthickness=0,
-    command=lambda: print("button_4 clicked"),
-    relief="flat"
+v_position_type = tk.StringVar(window, "2")
+
+button_long = tk.Radiobutton(
+    master=window,
+    text="Long",
+    font=("Helvetica", 20 * -1),
+    variable=v_position_type,
+    value="long"
 )
-button_4.place(
+button_long.place(
     x=645.0,
     y=553.0,
     width=160.0,
     height=44.0
 )
 
-button_5 = tk.Button(
-    text="5",
-    borderwidth=0,
-    highlightthickness=0,
-    command=lambda: print("button_5 clicked"),
-    relief="flat"
+button_short = tk.Radiobutton(
+    master=window,
+    text="Short",
+    font=("Helvetica", 20 * -1),
+    variable=v_position_type,
+    value="short"
 )
-button_5.place(
+button_short.place(
     x=645.0,
     y=611.0,
     width=160.0,
