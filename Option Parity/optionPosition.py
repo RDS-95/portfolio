@@ -1,4 +1,8 @@
-class optionPosition:
+import numpy as np
+import matplotlib.pyplot as plt
+
+
+class OptionPosition:
     def __init__(self):
         self.options = []
         self.graph_max = 10
@@ -29,43 +33,31 @@ class optionPosition:
         quantity: The number of contracts purchased. Can take negative values if writing contracts.
         """ 
         return quantity * (np.where(self.final_prices < strike_price, strike_price - self.final_prices, 0) - premium)
-    
-            
-    def add_call_option(self, strike_price, premium, quantity=1):
+
+    def add_option(self, strike_price, premium, option_type, quantity=1):
         """
-        Adds a call option to the current position and updates the payoffs accordingly
+        Adds a call/put option to the current position and updates the payoffs accordingly
         strike_price: The strike/exercise price of the option
         premium: The premium paid for the contract
         quantity: The number of contracts purchased. Can take negative values if writing contracts.
-        """ 
+        """
         self.update_graph_max(strike_price)
+
+        if option_type not in ("Call", "Put"):
+            raise ValueError('Invalid Option Type')
+
         option = {
-            'type': 'Call',
+            'type': option_type,
             'strike_price': strike_price,
             'premium': premium,
             'quantity': quantity
         }
         self.options.append(option)
-        self.payouts = np.add(self.payouts, self.call_payout(strike_price, premium, quantity))
 
-
-    def add_put_option(self, strike_price, premium, quantity=1):
-        """
-        Adds a put option to the current position and updates the payoffs accordingly
-        strike_price: The strike/exercise price of the option
-        premium: The premium paid for the contract
-        quantity: The number of contracts purchased. Can take negative values if writing contracts.
-        """ 
-        self.update_graph_max(strike_price)
-        option = {
-            'type': 'Put',
-            'strike_price': strike_price,
-            'premium': premium,
-            'quantity': quantity
-        }
-        self.options.append(option)
-        self.payouts = np.add(self.payouts, self.put_payout(strike_price, premium, quantity))
-
+        if option_type == "Call":
+            self.payouts = np.add(self.payouts, self.call_payout(strike_price, premium, quantity))
+        else:  # option_type == "Put"
+            self.payouts = np.add(self.payouts, self.put_payout(strike_price, premium, quantity))
 
     def show_position(self):
         """
@@ -81,8 +73,9 @@ class optionPosition:
             strike_price = option['strike_price']
             premium = option['premium']
             quantity = option['quantity']
-            print(f"Option {index}: {option_type} - Strike Price: {strike_price}, Premium: {premium}, Quantity: {quantity}")
-    
+            print(f"Option {index}: {option_type} - Strike Price: {strike_price}, "
+                  f"Premium: {premium}, Quantity: {quantity}")
+
     def find_breakeven_points(self):
         """
         find_breakeven_points gets the final asset prices where the holder of the position is breaking even.
