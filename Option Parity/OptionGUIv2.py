@@ -1,13 +1,53 @@
 import tkinter as tk
-from PIL import Image, ImageTk
 import optionPosition
+from  matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+
+###################
+
+class GUI(tk.Tk):
+    def __init__(self):
+        super().__init__()
+
+        self.title("Option Parity Graphs")
+        self.geometry("1050x700")
+        self.configure(bg="#7B96A5")
+        self.current_position = optionPosition.OptionPosition()
+
+    # Button Functions
+
+    def make_graph(pos):
+        canvas = FigureCanvasTkAgg(pos.parity_graph(), master=plot_frame)
+        canvas.draw()
+        canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
+
+    def clear_button():
+        current_position = optionPosition.OptionPosition()
+        make_graph(current_position)
+
+    def add_button():
+        current_position.add_option(
+            option_type=v_option_type.get(),
+            strike_price=int(entry_strike.get()),
+            premium=int(entry_premium.get()),
+            position_type=v_position_type.get()
+        )
+        make_graph(current_position)
+
+
+
+########################
 
 current_position = optionPosition.OptionPosition()
-current_graph = current_position.parity_graph()
+
+# Graphing Function for the Frame
+def make_graph(pos):
+    canvas = FigureCanvasTkAgg(pos.parity_graph(), master=plot_frame)
+    canvas.draw()
+    canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
 
 def clear_button():
     current_position = optionPosition.OptionPosition()
-    current_position.parity_graph()
+    make_graph(current_position)
 
 def add_button():
     current_position.add_option(
@@ -16,12 +56,15 @@ def add_button():
         premium = int(entry_premium.get()),
         position_type = v_position_type.get()
     )
-    current_position.parity_graph()
+    make_graph(current_position)
 
+# Setting up the master window.
 root = tk.Tk()
+root.wm_title("Option Parity Graphs")
 root.geometry("1050x700")
 root.configure(bg = "#7B96A5")
 
+# Background Colour
 canvas = tk.Canvas(
     root,
     bg = "#7B96A5",
@@ -35,10 +78,8 @@ canvas = tk.Canvas(
 canvas.place(x = 0, y = 0)
 
 # Whitespace for the plot
-plot_frame = tk.Canvas(root, width=1000, height=450, bg="white", highlightthickness=0)
+plot_frame = tk.Frame(root, width=1000, height=450, bg="white", highlightthickness=0)
 plot_frame.place(x = 20, y = 20)
-img = ImageTk.PhotoImage(Image.open("testimage.PNG"))
-plot_frame.create_image(20, 20, image=img)
 
 # Button Labels
 canvas.create_text(

@@ -1,11 +1,12 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from io import BytesIO
+from PIL import Image
 
-
-class optionPosition:
+class OptionPosition:
     def __init__(self):
         self.options = []
-        self.graph_max = 10
+        self.graph_max = 10 # arbitrary
         self.final_prices = np.arange(0, 200, 0.5)
         self.payouts = np.zeros_like(self.final_prices)
     
@@ -52,8 +53,6 @@ class optionPosition:
                 self.payouts = np.add(self.payouts, self.put_payout(strike_price, premium))
             elif position_type == "Short":
                 self.payouts = np.add(self.payouts, -self.put_payout(strike_price, premium))
-
-        self.parity_graph()
 
     def _validate_option_parameters(self, option_type, position_type):
         if option_type not in ("Call", "Put"):
@@ -127,5 +126,17 @@ class optionPosition:
         plt.legend(by_label.values(), by_label.keys())
         
         plt.xlim(0, self.graph_max)
+        plt.tight_layout()
         plt.grid(True)
-        plt.show()
+
+        buffer = BytesIO()
+        plt.savefig(buffer, format="png")
+        buffer.seek(0)
+        image = Image.open(buffer)
+
+        return image
+
+        # Debugging:
+        #plt.show()
+
+
