@@ -25,7 +25,7 @@ def add_button():
 def create_radio_button(master, text, variable, value, x, y):
     button = tk.Radiobutton(master=master,
                             text=text,
-                            font=("Helvetica", 20 * -1),
+                            font=("Helvetica", 20 * -1),  # N.B. negative sizes ~ font size in tk
                             variable=variable,
                             value=value)
     button.place(x=x, y=y, width=160, height=44)
@@ -39,7 +39,7 @@ root.configure(bg="#7B96A5")
 
 # Background Canvas
 canvas = tk.Canvas(root,
-                   bg="#7B96A5",
+                   bg="#808e9b",
                    height=200,
                    width=1050,
                    bd=0,
@@ -54,14 +54,17 @@ canvas.create_text(443, 6, anchor="nw", text="Premium", fill="#000000", font=("H
 canvas.create_text(650, 6, anchor="nw", text="Position", fill="#000000", font=("Helvetica", 20 * -1))
 
 button_addition = tk.Button(text="Add",
+                            bg="#0be881",
                             font=("Helvetica", 20 * -1),
                             borderwidth=0,
                             highlightthickness=0,
                             command=add_button,
-                            relief="flat")
+                            relief="raised")
 button_addition.place(x=845, y=6, width=180, height=91)
 
 button_clear = tk.Button(text="CE",
+                         bg="#ff5e57",
+                         font=("Helvetica", 20 * -1),
                          borderwidth=0,
                          highlightthickness=0,
                          command=clear_button,

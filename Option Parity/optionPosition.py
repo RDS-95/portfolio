@@ -8,6 +8,7 @@ class OptionPosition:
         self.graph_max = 10  # arbitrary
         self.final_prices = np.arange(0, 200, 0.5)
         self.payouts = np.zeros_like(self.final_prices)
+        self.fig, self.ax = plt.subplots(figsize=(10, 4))
     
     def update_graph_max(self, strike_price):
         """
@@ -17,19 +18,9 @@ class OptionPosition:
             self.graph_max = strike_price + 50
     
     def call_payout(self, strike_price, premium):
-        """
-        Calculate the payout of a standard vanilla call option.
-        strike_price: The strike/exercise price of the option
-        premium: The premium paid for the contract
-        """
         return np.where(self.final_prices > strike_price, self.final_prices - strike_price, 0) - premium
     
     def put_payout(self, strike_price, premium):
-        """
-        Calculate the payout of a standard vanilla put option.
-        strike_price: The strike/exercise price of the option
-        premium: The premium paid for the contract
-        """
         return np.where(self.final_prices < strike_price, strike_price - self.final_prices, 0) - premium
 
     def add_option(self, strike_price, premium, option_type, position_type):
@@ -64,9 +55,6 @@ class OptionPosition:
         self.options.append(option)
 
     def show_position(self):
-        """
-        Prompts a display of the current options held, summarizing the position.
-        """ 
         if len(self.options) == 0:
             print("Current position is closed.")
             return
@@ -80,11 +68,6 @@ class OptionPosition:
                   f"Premium: {premium}")
 
     def find_breakeven_points(self):
-        """
-        find_breakeven_points gets the final asset prices where the holder of the position is breaking even.
-        This is used in the parity_graph method.
-        """ 
-        
         # Use change of signs in payouts to find where the crossings are.
         crossings = np.where(np.diff(np.sign(self.payouts)))[0]
         
@@ -104,27 +87,28 @@ class OptionPosition:
         """
         parity_graph creates a diagram summarizing payout at expiry based on the current position.
         It takes into account all options currently held/written.
-        """ 
-        plt.figure(figsize=(10, 4))
-        plt.plot(self.final_prices, self.payouts, label='Position Payoff')
-        plt.xlabel('Final Asset Prices')
-        plt.ylabel('Payoff')
-        plt.title('Combined Position Payoff')
-        plt.axhline(0, color='black', linestyle='--', linewidth=0.8)
+        """
+        self.ax.clear()
+
+        self.ax.plot(self.final_prices, self.payouts, label='Position Payoff')
+        self.ax.set_xlabel('Final Asset Prices')
+        self.ax.set_ylabel('Payoff')
+        self.ax.set_title('Combined Position Payoff')
+        self.ax.axhline(0, color='black', linestyle='--', linewidth=0.8)
         
         # Add and annotate breakeven points on the plot.
         breakeven_points = self.find_breakeven_points()
         for point in breakeven_points:
-            plt.scatter(self.final_prices[point], self.payouts[point], color='green', s=50, label='Breakeven Point')
-            plt.annotate(f'{self.final_prices[point]}', (self.final_prices[point], self.payouts[point]),
-                         textcoords="offset points", xytext=(5, 5), ha='center')
+            self.ax.scatter(self.final_prices[point], self.payouts[point], color='green', s=50, label='Breakeven Point')
+            self.ax.annotate(f'{self.final_prices[point]}', (self.final_prices[point], self.payouts[point]),
+                             textcoords="offset points", xytext=(5, 5), ha='center')
 
         # Prevent duplicate labels appearing in the legend.
-        handles, labels = plt.gca().get_legend_handles_labels()
+        handles, labels = self.ax.get_legend_handles_labels()
         by_label = dict(zip(labels, handles))
-        plt.legend(by_label.values(), by_label.keys())
-        
-        plt.xlim(0, self.graph_max)
+        self.ax.legend(by_label.values(), by_label.keys())
+
+        self.ax.set_xlim(0, self.graph_max)
         plt.tight_layout()
         plt.grid(True)
         plt.show()
