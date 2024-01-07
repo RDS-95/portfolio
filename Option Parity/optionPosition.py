@@ -1,12 +1,11 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from io import BytesIO
-from PIL import Image
+
 
 class OptionPosition:
     def __init__(self):
         self.options = []
-        self.graph_max = 10 # arbitrary
+        self.graph_max = 10  # arbitrary
         self.final_prices = np.arange(0, 200, 0.5)
         self.payouts = np.zeros_like(self.final_prices)
     
@@ -128,15 +127,4 @@ class OptionPosition:
         plt.xlim(0, self.graph_max)
         plt.tight_layout()
         plt.grid(True)
-
-        buffer = BytesIO()
-        plt.savefig(buffer, format="png")
-        buffer.seek(0)
-        image = Image.open(buffer)
-
-        return image
-
-        # Debugging:
-        #plt.show()
-
-
+        plt.show()
